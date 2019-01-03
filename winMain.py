@@ -19,8 +19,8 @@ class winMain(screens.winMain):
         "yahoo.fr", "bbox.fr"])
         self.m_List.InsertColumn(0, u"Nom")
         self.m_List.InsertColumn(1, u"Prénom")
-        self.m_List.InsertColumn(2, u"Code postale")
-        self.m_List.InsertColumn(3, u"mail")
+        self.m_List.InsertColumn(2, u"mail")
+        self.m_List.InsertColumn(3, u"Code postale")
         self.m_List.InsertColumn(4, u"Téléphone")
 
     def error(self, title, msg):
@@ -33,6 +33,57 @@ class winMain(screens.winMain):
         dlg.Destroy()
 
     def onValidate( self, event ):
+        self.AddOrUpdateItem()
+
+
+    def onLeftUpTab( self, event ):
+        for i in range(self.m_List.GetItemCount()):
+            if self.m_List.IsSelected(i):
+                self.m_FirstName.SetValue(self.m_List.GetItemText(i, 0))
+                self.m_LastName.SetValue(self.m_List.GetItemText(i, 1))
+                mail, mailserver = self.m_List.GetItemText(i, 2).split("@")
+                self.m_Mail.SetValue(mail)
+                self.m_MailServer.SetValue(mailserver)
+                towncodes = self.m_List.GetItemText(i, 3)
+                if " " in towncodes:
+                    towncodes, towns = towncodes.split(" ", 2)
+                    self.m_TownCode.Clear()
+                    self.m_Town.SetValue("%s %s" % (towncodes, towns))
+                else:
+                    self.m_TownCode.SetValue(towncodes)
+                    self.m_Town.Clear()
+                self.m_Phone.SetValue(self.m_List.GetItemText(i, 4))
+                return
+
+    def onRightDownTab( self, event ):
+        menu = wx.Menu()
+        menu.Append(1, "Copy")
+        menu.Bind(wx.EVT_MENU, self.CopyItems, id=1)
+        menu.Append(2, "Mise à jour")
+        menu.Bind(wx.EVT_MENU, self.UpdateItem, id=2)
+        self.PopupMenu(menu)
+
+    def CopyItems(self, event):
+        selectedItems = []
+        for i in range(self.m_List.GetItemCount()):
+            l = []
+            for j in range(0, 5):
+                l.append(self.m_List.GetItemText(i, j))
+            selectedItems.append("\t".join(l))
+
+        clipdata = wx.TextDataObject()
+        clipdata.SetText("\n".join(selectedItems))
+        wx.TheClipboard.Open()
+        wx.TheClipboard.SetData(clipdata)
+        wx.TheClipboard.Close()
+
+    def UpdateItem(self, event):
+        for i in range(self.m_List.GetItemCount()):
+            if self.m_List.IsSelected(i):
+                self.AddOrUpdateItem(i)
+                return
+
+    def AddOrUpdateItem(self, index=None):
         self.m_LastName.SetValue(self.m_LastName.GetValue().upper().strip())
         self.m_FirstName.SetValue(self.m_FirstName.GetValue().lower().strip())
         phone = self.m_Phone.GetValue().strip()
@@ -52,10 +103,13 @@ class winMain(screens.winMain):
         mail = "%s@%s" % (self.m_Mail.GetValue(), self.m_MailServer.GetValue())
         if mail == "@":
             mail = ""
-        index = self.m_List.InsertItem(0, self.m_LastName.GetValue())
+        if index == None:
+            index = self.m_List.InsertItem(0, self.m_LastName.GetValue())
+        else:
+            self.m_List.SetItem(index, 0, self.m_LastName.GetValue())
         self.m_List.SetItem(index, 1, self.m_FirstName.GetValue())
-        self.m_List.SetItem(index, 2, town)
-        self.m_List.SetItem(index, 3, mail)
+        self.m_List.SetItem(index, 2, mail)
+        self.m_List.SetItem(index, 3, town)
         self.m_List.SetItem(index, 4, self.m_Phone.GetValue())
         f = open(self.m_Ref.GetValue(), "a+t")
         f.write('"%s";"%s";"%s";"%s";"%s";"%s";"%s"\n' % (

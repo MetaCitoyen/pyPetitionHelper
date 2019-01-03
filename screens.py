@@ -136,6 +136,8 @@ class winMain ( wx.Dialog ):
 		
 		# Connect Events
 		self.m_button1.Bind( wx.EVT_BUTTON, self.onValidate )
+		self.m_List.Bind( wx.EVT_LEFT_UP, self.onLeftUpTab )
+		self.m_List.Bind( wx.EVT_RIGHT_DOWN, self.onRightDownTab )
 	
 	def __del__( self ):
 		pass
@@ -143,6 +145,12 @@ class winMain ( wx.Dialog ):
 	
 	# Virtual event handlers, overide them in your derived class
 	def onValidate( self, event ):
+		event.Skip()
+	
+	def onLeftUpTab( self, event ):
+		event.Skip()
+	
+	def onRightDownTab( self, event ):
 		event.Skip()
 	
 

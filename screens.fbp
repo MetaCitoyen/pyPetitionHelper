@@ -1901,7 +1901,7 @@
                         <event name="OnLeaveWindow"></event>
                         <event name="OnLeftDClick"></event>
                         <event name="OnLeftDown"></event>
-                        <event name="OnLeftUp"></event>
+                        <event name="OnLeftUp">onLeftUpTab</event>
                         <event name="OnListBeginDrag"></event>
                         <event name="OnListBeginLabelEdit"></event>
                         <event name="OnListBeginRDrag"></event>
@@ -1930,7 +1930,7 @@
                         <event name="OnMouseWheel"></event>
                         <event name="OnPaint"></event>
                         <event name="OnRightDClick"></event>
-                        <event name="OnRightDown"></event>
+                        <event name="OnRightDown">onRightDownTab</event>
                         <event name="OnRightUp"></event>
                         <event name="OnSetFocus"></event>
                         <event name="OnSize"></event>
