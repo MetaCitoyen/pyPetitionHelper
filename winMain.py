@@ -16,12 +16,29 @@ class winMain(screens.winMain):
         self.m_TownCode.AutoComplete(towncodes.towncodes)
         self.m_MailServer.AutoComplete(["orange.fr", "free.fr", "live.fr", "gmail.com", "outlook.fr",
         "hotmail.fr", "hotmail.com", "sfr.fr", "wanadoo.fr", "laposte.net", "libertysurf.fr",
-        "yahoo.fr", "bbox.fr"])
+        "yahoo.fr", "bbox.fr", "club-internet.fr"])
         self.m_List.InsertColumn(0, u"Nom")
         self.m_List.InsertColumn(1, u"Prénom")
         self.m_List.InsertColumn(2, u"mail")
         self.m_List.InsertColumn(3, u"Code postale")
         self.m_List.InsertColumn(4, u"Téléphone")
+
+    def onToggleMail( self, event ):
+        self.m_Mail.Enable(not self.m_Mail.IsEnabled())
+        self.m_MailServer.Enable(self.m_Mail.IsEnabled())
+        self.m_Mail.SetValue("")
+        self.m_MailServer.SetValue("")
+
+    def onTogglePhone( self, event ):
+        self.m_Phone.Enable(not self.m_Phone.IsEnabled())
+        self.m_Phone.SetValue("")
+
+    def onToggleTown( self, event ):
+        self.m_Town.Enable(not self.m_Town.IsEnabled())
+        self.m_Town.SetValue("")
+
+    def onToggleTownCode( self, event ):
+        self.m_TownCode.Enable(not self.m_TownCode.IsEnabled())
 
     def error(self, title, msg):
         dlg = wx.MessageDialog(self,
@@ -32,16 +49,20 @@ class winMain(screens.winMain):
         dlg.ShowModal()
         dlg.Destroy()
 
-    def onValidate( self, event ):
+    def onValidate(self, event):
         self.AddOrUpdateItem()
 
 
-    def onLeftUpTab( self, event ):
+    def onLeftUpTab(self, event):
         for i in range(self.m_List.GetItemCount()):
             if self.m_List.IsSelected(i):
                 self.m_FirstName.SetValue(self.m_List.GetItemText(i, 0))
                 self.m_LastName.SetValue(self.m_List.GetItemText(i, 1))
-                mail, mailserver = self.m_List.GetItemText(i, 2).split("@")
+                mail = self.m_List.GetItemText(i, 2)
+                if "@" in mail:
+                    mail, mailserver = mail.split("@", 2)
+                else:
+                    mailserver = ""
                 self.m_Mail.SetValue(mail)
                 self.m_MailServer.SetValue(mailserver)
                 towncodes = self.m_List.GetItemText(i, 3)
@@ -55,12 +76,14 @@ class winMain(screens.winMain):
                 self.m_Phone.SetValue(self.m_List.GetItemText(i, 4))
                 return
 
-    def onRightDownTab( self, event ):
+    def onRightDownTab(self, event):
         menu = wx.Menu()
-        menu.Append(1, "Copy")
+        menu.Append(1, "Copier dans le presse papier")
         menu.Bind(wx.EVT_MENU, self.CopyItems, id=1)
         menu.Append(2, "Mise à jour")
         menu.Bind(wx.EVT_MENU, self.UpdateItem, id=2)
+        menu.Append(3, "Effacer")
+        menu.Bind(wx.EVT_MENU, self.ClearTab, id=3)
         self.PopupMenu(menu)
 
     def CopyItems(self, event):
@@ -86,6 +109,8 @@ class winMain(screens.winMain):
     def AddOrUpdateItem(self, index=None):
         self.m_LastName.SetValue(self.m_LastName.GetValue().upper().strip())
         self.m_FirstName.SetValue(self.m_FirstName.GetValue().lower().strip())
+        self.m_MailServer.SetValue(self.m_MailServer.GetValue().lower().strip())
+        self.m_Mail.SetValue(self.m_Mail.GetValue().lower().strip())
         phone = self.m_Phone.GetValue().strip()
         if phone != "":
             if len(phone) != 10:
@@ -111,8 +136,9 @@ class winMain(screens.winMain):
         self.m_List.SetItem(index, 2, mail)
         self.m_List.SetItem(index, 3, town)
         self.m_List.SetItem(index, 4, self.m_Phone.GetValue())
-        f = open(self.m_Ref.GetValue(), "a+t")
-        f.write('"%s";"%s";"%s";"%s";"%s";"%s";"%s"\n' % (
+        f = open("PetitionHelper.log", "a+t")
+        f.write('"%s";"%s";"%s";"%s";"%s";"%s";"%s";"%s"\n' % (
+                self.m_Ref.GetValue(),
                 self.m_Page.GetValue(),
                 self.m_Line.GetValue(),
                 self.m_LastName.GetValue(),
@@ -130,6 +156,17 @@ class winMain(screens.winMain):
         self.m_MailServer.Clear()
         self.m_Line.SetValue(str(int(self.m_Line.GetValue())+1))
         self.m_LastName.SetFocus()
+
+    def ClearTab(self, event):
+        dlg = wx.MessageDialog(self,
+                               "Confirmation",
+                               "Etes-vous certain de vouloir supprimer les éléments ?",
+                               wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION
+                               )
+        if dlg.ShowModal() == wx.ID_YES:
+            self.m_List.DeleteAllItems()
+        dlg.Destroy()
+
 
     def onQuit(self, event):
         self.Close()

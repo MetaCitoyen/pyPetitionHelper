@@ -7,6 +7,7 @@
 ## PLEASE DO "NOT" EDIT THIS FILE!
 ###########################################################################
 
+from mywx import myCheckBox
 import wx
 import wx.xrc
 
@@ -57,6 +58,9 @@ class winMain ( wx.Dialog ):
 		self.m_TownCode.SetMaxLength( 5 ) 
 		bSizer4.Add( self.m_TownCode, 1, wx.ALL, 5 )
 		
+		self.m_TownCodeKeep = myCheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer4.Add( self.m_TownCodeKeep, 0, wx.ALL, 5 )
+		
 		
 		bSizer1.Add( bSizer4, 0, wx.EXPAND, 5 )
 		
@@ -68,6 +72,9 @@ class winMain ( wx.Dialog ):
 		
 		self.m_Town = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer5.Add( self.m_Town, 1, wx.ALL, 5 )
+		
+		self.m_TownIgnore = myCheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer5.Add( self.m_TownIgnore, 0, wx.ALL, 5 )
 		
 		
 		bSizer1.Add( bSizer5, 0, wx.EXPAND, 5 )
@@ -88,6 +95,9 @@ class winMain ( wx.Dialog ):
 		self.m_MailServer = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer6.Add( self.m_MailServer, 1, wx.ALL, 5 )
 		
+		self.m_MailIgnore = myCheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer6.Add( self.m_MailIgnore, 0, wx.ALL, 5 )
+		
 		
 		bSizer1.Add( bSizer6, 0, wx.EXPAND, 5 )
 		
@@ -100,6 +110,9 @@ class winMain ( wx.Dialog ):
 		self.m_Phone = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_Phone.SetMaxLength( 10 ) 
 		bSizer7.Add( self.m_Phone, 1, wx.ALL, 5 )
+		
+		self.m_PhoneIgnore = myCheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer7.Add( self.m_PhoneIgnore, 0, wx.ALL, 5 )
 		
 		
 		bSizer1.Add( bSizer7, 0, wx.EXPAND, 5 )
@@ -135,6 +148,10 @@ class winMain ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 		
 		# Connect Events
+		self.m_TownCodeKeep.Bind( wx.EVT_CHECKBOX, self.onToggleTownCode )
+		self.m_TownIgnore.Bind( wx.EVT_CHECKBOX, self.onToggleTown )
+		self.m_MailIgnore.Bind( wx.EVT_CHECKBOX, self.onToggleMail )
+		self.m_PhoneIgnore.Bind( wx.EVT_CHECKBOX, self.onTogglePhone )
 		self.m_button1.Bind( wx.EVT_BUTTON, self.onValidate )
 		self.m_List.Bind( wx.EVT_LEFT_UP, self.onLeftUpTab )
 		self.m_List.Bind( wx.EVT_RIGHT_DOWN, self.onRightDownTab )
@@ -144,6 +161,18 @@ class winMain ( wx.Dialog ):
 	
 	
 	# Virtual event handlers, overide them in your derived class
+	def onToggleTownCode( self, event ):
+		event.Skip()
+	
+	def onToggleTown( self, event ):
+		event.Skip()
+	
+	def onToggleMail( self, event ):
+		event.Skip()
+	
+	def onTogglePhone( self, event ):
+		event.Skip()
+	
 	def onValidate( self, event ):
 		event.Skip()
 	
