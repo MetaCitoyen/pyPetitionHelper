@@ -7,6 +7,7 @@
 ## PLEASE DO "NOT" EDIT THIS FILE!
 ###########################################################################
 
+from autocomplete import AutocompleteTextCtrl
 from mywx import myCheckBox
 import wx
 import wx.xrc
@@ -30,7 +31,7 @@ class winMain ( wx.Dialog ):
 		self.m_staticText1.Wrap( -1 )
 		bSizer2.Add( self.m_staticText1, 0, wx.ALL, 5 )
 		
-		self.m_LastName = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_LastName = AutocompleteTextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer2.Add( self.m_LastName, 1, wx.ALL, 5 )
 		
 		
@@ -42,7 +43,7 @@ class winMain ( wx.Dialog ):
 		self.m_staticText2.Wrap( -1 )
 		bSizer3.Add( self.m_staticText2, 0, wx.ALL, 5 )
 		
-		self.m_FirstName = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_FirstName = AutocompleteTextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer3.Add( self.m_FirstName, 1, wx.ALL, 5 )
 		
 		
@@ -70,7 +71,7 @@ class winMain ( wx.Dialog ):
 		self.m_staticText4.Wrap( -1 )
 		bSizer5.Add( self.m_staticText4, 0, wx.ALL, 5 )
 		
-		self.m_Town = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_Town = AutocompleteTextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer5.Add( self.m_Town, 1, wx.ALL, 5 )
 		
 		self.m_TownIgnore = myCheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -85,7 +86,7 @@ class winMain ( wx.Dialog ):
 		self.m_staticText5.Wrap( -1 )
 		bSizer6.Add( self.m_staticText5, 0, wx.ALL, 5 )
 		
-		self.m_Mail = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_Mail = AutocompleteTextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer6.Add( self.m_Mail, 2, wx.ALL, 5 )
 		
 		self.m_staticText24 = wx.StaticText( self, wx.ID_ANY, u"@", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -141,6 +142,9 @@ class winMain ( wx.Dialog ):
 		self.m_List = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
 		bSizer1.Add( self.m_List, 1, wx.ALL|wx.EXPAND, 5 )
 		
+		self.m_button2 = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer1.Add( self.m_button2, 0, wx.ALL, 5 )
+		
 		
 		self.SetSizer( bSizer1 )
 		self.Layout()
@@ -155,6 +159,7 @@ class winMain ( wx.Dialog ):
 		self.m_button1.Bind( wx.EVT_BUTTON, self.onValidate )
 		self.m_List.Bind( wx.EVT_LEFT_UP, self.onLeftUpTab )
 		self.m_List.Bind( wx.EVT_RIGHT_DOWN, self.onRightDownTab )
+		self.m_button2.Bind( wx.EVT_BUTTON, self.onTest )
 	
 	def __del__( self ):
 		pass
@@ -180,6 +185,9 @@ class winMain ( wx.Dialog ):
 		event.Skip()
 	
 	def onRightDownTab( self, event ):
+		event.Skip()
+	
+	def onTest( self, event ):
 		event.Skip()
 	
 

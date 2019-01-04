@@ -6,14 +6,59 @@ import lastnames
 import towns
 import towncodes
 
+def AutoCompleteLastNames(prefix):
+    pref = prefix.upper()
+    data = []
+    for name in lastnames.lastnames:
+        if name.startswith(pref):
+            data.append(name)
+    return data, data
+
+def AutoCompleteFirstNames(prefix):
+    pref = prefix.lower()
+    data = []
+    for name in firstnames.firstnames:
+        if name.startswith(pref):
+            data.append(name)
+    return data, data
+
+def AutoCompleteLastTowns(prefix):
+    pref = prefix.upper()
+    data = []
+    for name in towns.towns:
+        if pref in name.upper():
+            data.append(name)
+    return data, data
+
+def AutoCompleteMail(prefix):
+    values = [
+        [FIRSTNAME.GetValue().lower(), False],
+        [LASTNAME.GetValue().lower(), False],
+        [TOWNCODE.GetValue(), False]
+    ]
+    pref = prefix.lower()
+    res = []
+    for i in range(1, len(pref)+1):
+        p = pref[-i:]
+        for v in range(0, len(values)):
+            if not values[v][1] and values[v][0].startswith(p):
+                res.append(values[v][0])
+                values[v][1] = True
+    return res, res
 
 class winMain(screens.winMain):
     def __init__(self, parent):
         screens.winMain.__init__(self, parent)
-        self.m_LastName.AutoComplete(lastnames.lastnames)
-        self.m_FirstName.AutoComplete(firstnames.firstnames)
-        self.m_Town.AutoComplete(towns.towns)
+        global FIRSTNAME, LASTNAME, TOWNCODE
+        FIRSTNAME = self.m_FirstName
+        LASTNAME = self.m_LastName
+        TOWNCODE = self.m_TownCode
+        self.m_LastName.SetCompleter(AutoCompleteLastNames)
+        self.m_FirstName.SetCompleter(AutoCompleteFirstNames)
+        self.m_Town.SetCompleter(AutoCompleteLastTowns)
         self.m_TownCode.AutoComplete(towncodes.towncodes)
+        self.m_Mail.SetCompleter(AutoCompleteMail)
+        self.m_Mail.SetAppendMode(True)
         self.m_MailServer.AutoComplete(["orange.fr", "free.fr", "live.fr", "gmail.com", "outlook.fr",
         "hotmail.fr", "hotmail.com", "sfr.fr", "wanadoo.fr", "laposte.net", "libertysurf.fr",
         "yahoo.fr", "bbox.fr", "club-internet.fr"])
@@ -56,8 +101,8 @@ class winMain(screens.winMain):
     def onLeftUpTab(self, event):
         for i in range(self.m_List.GetItemCount()):
             if self.m_List.IsSelected(i):
-                self.m_FirstName.SetValue(self.m_List.GetItemText(i, 0))
-                self.m_LastName.SetValue(self.m_List.GetItemText(i, 1))
+                self.m_LastName.SetValue(self.m_List.GetItemText(i, 0))
+                self.m_FirstName.SetValue(self.m_List.GetItemText(i, 1))
                 mail = self.m_List.GetItemText(i, 2)
                 if "@" in mail:
                     mail, mailserver = mail.split("@", 2)
