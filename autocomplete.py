@@ -25,6 +25,11 @@ POSSIBILITY OF SUCH DAMAGE."""
 __author__ = u"Toni Ruža <gmr.gaf@gmail.com>"
 __url__  = "http://bitbucket.org/raz/wxautocompletectrl"
 
+# Note from https://github.com/MetaCitoyen/pyPetitionHelper
+# The current version has been updated for pyPetitionHelper purpose.
+# - Compliance for Python 3
+# - Add the append mode
+# Thanks to Toni Ruža who has done a good job with this component and share it with community
 
 import wx
 import wx.html
