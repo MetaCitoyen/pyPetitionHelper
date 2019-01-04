@@ -30,6 +30,25 @@ def AutoCompleteLastTowns(prefix):
             data.append(name)
     return data, data
 
+def AutoCompleteLastTownsCodes(prefix):
+    pref = prefix.upper()
+    data = []
+    for name in towncodes.towncodes:
+        if name.startswith(pref):
+            data.append(name)
+    return data, data
+
+def AutoCompleteMailServer(prefix):
+    mailsServers = ["orange.fr", "free.fr", "live.fr", "gmail.com", "outlook.fr",
+        "hotmail.fr", "hotmail.com", "sfr.fr", "wanadoo.fr", "laposte.net", "libertysurf.fr",
+        "yahoo.fr", "bbox.fr", "club-internet.fr"]
+    pref = prefix.lower()
+    data = []
+    for name in mailsServers:
+        if name.startswith(pref):
+            data.append(name)
+    return data, data
+
 def AutoCompleteMail(prefix):
     values = [
         [FIRSTNAME.GetValue().lower(), False],
@@ -56,12 +75,10 @@ class winMain(screens.winMain):
         self.m_LastName.SetCompleter(AutoCompleteLastNames)
         self.m_FirstName.SetCompleter(AutoCompleteFirstNames)
         self.m_Town.SetCompleter(AutoCompleteLastTowns)
-        self.m_TownCode.AutoComplete(towncodes.towncodes)
+        self.m_TownCode.SetCompleter(AutoCompleteLastTownsCodes)
         self.m_Mail.SetCompleter(AutoCompleteMail)
         self.m_Mail.SetAppendMode(True)
-        self.m_MailServer.AutoComplete(["orange.fr", "free.fr", "live.fr", "gmail.com", "outlook.fr",
-        "hotmail.fr", "hotmail.com", "sfr.fr", "wanadoo.fr", "laposte.net", "libertysurf.fr",
-        "yahoo.fr", "bbox.fr", "club-internet.fr"])
+        self.m_MailServer.SetCompleter(AutoCompleteMailServer)
         self.m_List.InsertColumn(0, u"Nom")
         self.m_List.InsertColumn(1, u"Prénom")
         self.m_List.InsertColumn(2, u"mail")
@@ -212,6 +229,13 @@ class winMain(screens.winMain):
             self.m_List.DeleteAllItems()
         dlg.Destroy()
 
+    def onKeyDownEnter( self, event ):
+        key = event.GetKeyCode()
+        if key in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
+            self.FindFocus().Navigate(flags=wx.NavigationKeyEvent.IsForward)
+            return
+        event.Skip()
+
 
     def onQuit(self, event):
-        self.Close()
+        self.Destroy()

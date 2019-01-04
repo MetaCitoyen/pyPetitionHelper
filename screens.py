@@ -55,7 +55,7 @@ class winMain ( wx.Dialog ):
 		self.m_staticText3.Wrap( -1 )
 		bSizer4.Add( self.m_staticText3, 0, wx.ALL, 5 )
 		
-		self.m_TownCode = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_TownCode = AutocompleteTextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_TownCode.SetMaxLength( 5 ) 
 		bSizer4.Add( self.m_TownCode, 1, wx.ALL, 5 )
 		
@@ -93,7 +93,7 @@ class winMain ( wx.Dialog ):
 		self.m_staticText24.Wrap( -1 )
 		bSizer6.Add( self.m_staticText24, 0, wx.ALL, 5 )
 		
-		self.m_MailServer = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_MailServer = AutocompleteTextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer6.Add( self.m_MailServer, 1, wx.ALL, 5 )
 		
 		self.m_MailIgnore = myCheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -108,7 +108,7 @@ class winMain ( wx.Dialog ):
 		self.m_staticText6.Wrap( -1 )
 		bSizer7.Add( self.m_staticText6, 0, wx.ALL, 5 )
 		
-		self.m_Phone = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_Phone = AutocompleteTextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_Phone.SetMaxLength( 10 ) 
 		bSizer7.Add( self.m_Phone, 1, wx.ALL, 5 )
 		
@@ -117,6 +117,12 @@ class winMain ( wx.Dialog ):
 		
 		
 		bSizer1.Add( bSizer7, 0, wx.EXPAND, 5 )
+		
+		self.m_button1 = wx.Button( self, wx.ID_ANY, u"Enregistrer", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer1.Add( self.m_button1, 0, wx.ALL|wx.EXPAND, 5 )
+		
+		self.m_List = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
+		bSizer1.Add( self.m_List, 1, wx.ALL|wx.EXPAND, 5 )
 		
 		bSizer8 = wx.BoxSizer( wx.HORIZONTAL )
 		
@@ -136,15 +142,6 @@ class winMain ( wx.Dialog ):
 		
 		bSizer1.Add( bSizer8, 0, wx.EXPAND, 5 )
 		
-		self.m_button1 = wx.Button( self, wx.ID_ANY, u"Enregistrer", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer1.Add( self.m_button1, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_List = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
-		bSizer1.Add( self.m_List, 1, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_button2 = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer1.Add( self.m_button2, 0, wx.ALL, 5 )
-		
 		
 		self.SetSizer( bSizer1 )
 		self.Layout()
@@ -152,28 +149,47 @@ class winMain ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 		
 		# Connect Events
+		self.Bind( wx.EVT_CLOSE, self.onQuit )
+		self.m_LastName.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
+		self.m_FirstName.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
+		self.m_TownCode.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
 		self.m_TownCodeKeep.Bind( wx.EVT_CHECKBOX, self.onToggleTownCode )
+		self.m_Town.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
 		self.m_TownIgnore.Bind( wx.EVT_CHECKBOX, self.onToggleTown )
+		self.m_Mail.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
+		self.m_MailServer.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
 		self.m_MailIgnore.Bind( wx.EVT_CHECKBOX, self.onToggleMail )
+		self.m_Phone.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
 		self.m_PhoneIgnore.Bind( wx.EVT_CHECKBOX, self.onTogglePhone )
 		self.m_button1.Bind( wx.EVT_BUTTON, self.onValidate )
 		self.m_List.Bind( wx.EVT_LEFT_UP, self.onLeftUpTab )
 		self.m_List.Bind( wx.EVT_RIGHT_DOWN, self.onRightDownTab )
-		self.m_button2.Bind( wx.EVT_BUTTON, self.onTest )
 	
 	def __del__( self ):
 		pass
 	
 	
 	# Virtual event handlers, overide them in your derived class
+	def onQuit( self, event ):
+		event.Skip()
+	
+	def onKeyDownEnter( self, event ):
+		event.Skip()
+	
+	
+	
 	def onToggleTownCode( self, event ):
 		event.Skip()
+	
 	
 	def onToggleTown( self, event ):
 		event.Skip()
 	
+	
+	
 	def onToggleMail( self, event ):
 		event.Skip()
+	
 	
 	def onTogglePhone( self, event ):
 		event.Skip()
@@ -185,9 +201,6 @@ class winMain ( wx.Dialog ):
 		event.Skip()
 	
 	def onRightDownTab( self, event ):
-		event.Skip()
-	
-	def onTest( self, event ):
 		event.Skip()
 	
 

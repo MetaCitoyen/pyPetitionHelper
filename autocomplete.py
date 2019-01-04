@@ -192,7 +192,8 @@ class AutocompleteTextCtrl(wx.TextCtrl):
                 self.SetValue(self.popup.GetSelectedSuggestion())
             self.SetInsertionPointEnd()
             self.popup.Hide()
-            return
+            if self.opt_append:
+                return
 
         elif key == wx.WXK_HOME:
             self.popup.CursorHome()
@@ -200,7 +201,7 @@ class AutocompleteTextCtrl(wx.TextCtrl):
         elif key == wx.WXK_END:
             self.popup.CursorEnd()
 
-        elif event.ControlDown() and unichr(key).lower() == "a":
+        elif event.ControlDown() and chr(key).lower() == "a":
             self.SelectAll()
 
         elif key == wx.WXK_ESCAPE:
