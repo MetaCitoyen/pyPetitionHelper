@@ -49,37 +49,6 @@ class winMain ( wx.Dialog ):
 		
 		bSizer1.Add( bSizer3, 0, wx.EXPAND, 5 )
 		
-		bSizer4 = wx.BoxSizer( wx.HORIZONTAL )
-		
-		self.m_staticText3 = wx.StaticText( self, wx.ID_ANY, u"Code postale", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText3.Wrap( -1 )
-		bSizer4.Add( self.m_staticText3, 0, wx.ALL, 5 )
-		
-		self.m_TownCode = AutocompleteTextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_TownCode.SetMaxLength( 5 ) 
-		bSizer4.Add( self.m_TownCode, 1, wx.ALL, 5 )
-		
-		self.m_TownCodeKeep = myCheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer4.Add( self.m_TownCodeKeep, 0, wx.ALL, 5 )
-		
-		
-		bSizer1.Add( bSizer4, 0, wx.EXPAND, 5 )
-		
-		bSizer5 = wx.BoxSizer( wx.HORIZONTAL )
-		
-		self.m_staticText4 = wx.StaticText( self, wx.ID_ANY, u"Commune", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText4.Wrap( -1 )
-		bSizer5.Add( self.m_staticText4, 0, wx.ALL, 5 )
-		
-		self.m_Town = AutocompleteTextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer5.Add( self.m_Town, 1, wx.ALL, 5 )
-		
-		self.m_TownIgnore = myCheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer5.Add( self.m_TownIgnore, 0, wx.ALL, 5 )
-		
-		
-		bSizer1.Add( bSizer5, 0, wx.EXPAND, 5 )
-		
 		bSizer6 = wx.BoxSizer( wx.HORIZONTAL )
 		
 		self.m_staticText5 = wx.StaticText( self, wx.ID_ANY, u"Mail", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -118,6 +87,37 @@ class winMain ( wx.Dialog ):
 		
 		bSizer1.Add( bSizer7, 0, wx.EXPAND, 5 )
 		
+		bSizer4 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		self.m_staticText3 = wx.StaticText( self, wx.ID_ANY, u"Code postale", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText3.Wrap( -1 )
+		bSizer4.Add( self.m_staticText3, 0, wx.ALL, 5 )
+		
+		self.m_TownCode = AutocompleteTextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_TownCode.SetMaxLength( 5 ) 
+		bSizer4.Add( self.m_TownCode, 1, wx.ALL, 5 )
+		
+		self.m_TownCodeKeep = myCheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer4.Add( self.m_TownCodeKeep, 0, wx.ALL, 5 )
+		
+		
+		bSizer1.Add( bSizer4, 0, wx.EXPAND, 5 )
+		
+		bSizer5 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		self.m_staticText4 = wx.StaticText( self, wx.ID_ANY, u"Commune", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText4.Wrap( -1 )
+		bSizer5.Add( self.m_staticText4, 0, wx.ALL, 5 )
+		
+		self.m_Town = AutocompleteTextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer5.Add( self.m_Town, 1, wx.ALL, 5 )
+		
+		self.m_TownIgnore = myCheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer5.Add( self.m_TownIgnore, 0, wx.ALL, 5 )
+		
+		
+		bSizer1.Add( bSizer5, 0, wx.EXPAND, 5 )
+		
 		self.m_button1 = wx.Button( self, wx.ID_ANY, u"Enregistrer", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer1.Add( self.m_button1, 0, wx.ALL|wx.EXPAND, 5 )
 		
@@ -152,15 +152,15 @@ class winMain ( wx.Dialog ):
 		self.Bind( wx.EVT_CLOSE, self.onQuit )
 		self.m_LastName.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
 		self.m_FirstName.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
-		self.m_TownCode.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
-		self.m_TownCodeKeep.Bind( wx.EVT_CHECKBOX, self.onToggleTownCode )
-		self.m_Town.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
-		self.m_TownIgnore.Bind( wx.EVT_CHECKBOX, self.onToggleTown )
 		self.m_Mail.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
 		self.m_MailServer.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
 		self.m_MailIgnore.Bind( wx.EVT_CHECKBOX, self.onToggleMail )
 		self.m_Phone.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
 		self.m_PhoneIgnore.Bind( wx.EVT_CHECKBOX, self.onTogglePhone )
+		self.m_TownCode.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
+		self.m_TownCodeKeep.Bind( wx.EVT_CHECKBOX, self.onToggleTownCode )
+		self.m_Town.Bind( wx.EVT_KEY_DOWN, self.onKeyDownEnter )
+		self.m_TownIgnore.Bind( wx.EVT_CHECKBOX, self.onToggleTown )
 		self.m_button1.Bind( wx.EVT_BUTTON, self.onValidate )
 		self.m_List.Bind( wx.EVT_LEFT_UP, self.onLeftUpTab )
 		self.m_List.Bind( wx.EVT_RIGHT_DOWN, self.onRightDownTab )
@@ -178,20 +178,20 @@ class winMain ( wx.Dialog ):
 	
 	
 	
-	def onToggleTownCode( self, event ):
-		event.Skip()
-	
-	
-	def onToggleTown( self, event ):
-		event.Skip()
-	
-	
 	
 	def onToggleMail( self, event ):
 		event.Skip()
 	
 	
 	def onTogglePhone( self, event ):
+		event.Skip()
+	
+	
+	def onToggleTownCode( self, event ):
+		event.Skip()
+	
+	
+	def onToggleTown( self, event ):
 		event.Skip()
 	
 	def onValidate( self, event ):
